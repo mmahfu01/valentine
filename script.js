@@ -24,19 +24,15 @@ aweejYesBtn.addEventListener("click", (e) => {
   askScreen.classList.add("active");
 });
 
-aweejNoBtn.onclick = (e) => {
-  e.stopPropagation();
-  alert("Access denied 😤 only aweej allowed");
-};
+aweejNoBtn.addEventListener("click", function () {
+  alert("Access denied. Only aweej allowed 😤");
+});
 
 aweejYesBtn.addEventListener("click", function () {
   introScreen.classList.remove("active");
   askScreen.classList.add("active");
 });
 
-aweejNoBtn.addEventListener("click", function () {
-  alert("Access denied. Only aweej allowed 😤");
-});
 
 yesBtn.addEventListener("click", function () {
   askScreen.classList.remove("active");
