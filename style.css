@@ -1,0 +1,328 @@
+/* -----------------------------
+   SCREEN SYSTEM
+------------------------------ */
+.screen {
+  display: none;
+  position: relative;
+  z-index: 1; /* above hearts */
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffe6f0;
+}
+
+/* -----------------------------
+   HEARTS BACKGROUND LAYER
+------------------------------ */
+#heartsLayer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0.85;
+  animation: floatUp linear forwards;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-110vh) translateX(var(--drift)) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+
+/* -----------------------------
+   GLOBAL BUTTON STYLE
+------------------------------ */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* Glow text only (Intro + Ask) */
+#introScreen button,
+#askScreen button {
+  background-color: #ffd5e3;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.8),
+    0 0 12px rgba(255, 120, 200, 0.7),
+    0 0 20px rgba(255, 80, 180, 0.5);
+  box-shadow: 0 0 15px rgba(255, 80, 180, 0.4);
+}
+
+/* -----------------------------
+   ASK SCREEN (YES/NO LAYOUT)
+------------------------------ */
+.button-area {
+  position: relative;
+  width: 500px;
+  height: 260px;
+  margin-top: 30px;
+}
+
+/* Start positions (you liked this symmetry) */
+#yesBtn {
+  position: absolute;
+  left: 38%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* keep YES clickable */
+}
+
+#noBtn {
+  position: absolute;
+  left: 62%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.12s cubic-bezier(.2,.9,.2,1), top 0.12s cubic-bezier(.2,.9,.2,1);
+  z-index: 1;
+}
+
+/* -----------------------------
+   INTRO SCREEN BACKGROUND
+------------------------------ */
+#introScreen {
+  background: linear-gradient(135deg, #ff90c2, #ff6098);
+  color: #fff;
+}
+
+/* (Optional) keep headings clean, no glow */
+#introScreen h1, #introScreen h2 {
+  margin: 0 0 10px;
+}
+
+/* -----------------------------
+   ENVELOPE (COMBINED INTRO)
+   Fixes: readability + layering
+------------------------------ */
+.envelope-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.env-hint {
+  margin: 14px 0 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.envelope {
+  width: 340px;
+  height: 220px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transform: translateZ(0);
+}
+
+/* Layer order (THIS fixes messy text overlay) */
+.env-back  { position: absolute; inset: 0; z-index: 1; }
+.env-front { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.env-letter{ position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 3; }
+.env-flap  { position: absolute; left: 0; right: 0; top: 0; z-index: 4; pointer-events: none; }
+.env-seal  { position: absolute; left: 50%; top: 104px; z-index: 5; pointer-events: none; }
+
+/* Back */
+.env-back {
+  background: #ffd5e3;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+/* Letter (hidden until open) */
+.env-letter {
+  height: 170px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 14px;
+  padding: 16px 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+  text-align: center;
+
+  /* hidden state */
+  transform: translateY(52px);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(.2,.9,.2,1), opacity 0.35s ease;
+
+  /* readability */
+  color: #3a1742;
+  line-height: 1.25;
+}
+
+.env-letter h1 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.env-letter h2 {
+  font-size: 15px;
+  margin: 0 0 12px;
+  opacity: 0.9;
+}
+
+.intro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Front triangles */
+.env-front {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.env-front::before,
+.env-front::after {
+  content: "";
+  position: absolute;
+  width: 0; height: 0;
+  border-style: solid;
+}
+
+/* left triangle */
+.env-front::before {
+  left: 0;
+  top: 0;
+  border-width: 110px 0 110px 170px;
+  border-color: transparent transparent transparent rgba(255, 180, 205, 0.9);
+}
+
+/* right triangle */
+.env-front::after {
+  right: 0;
+  top: 0;
+  border-width: 110px 170px 110px 0;
+  border-color: transparent rgba(255, 180, 205, 0.9) transparent transparent;
+}
+
+/* Flap */
+.env-flap {
+  height: 120px;
+  border-radius: 18px 18px 0 0;
+  transform-origin: top center;
+  transition: transform 0.55s cubic-bezier(.2,.9,.2,1), opacity 0.35s ease;
+}
+
+.env-flap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+
+  /* Triangle pointing UP */
+  border-width: 120px 170px 0 170px;
+  border-color: rgba(255, 160, 195, 0.95) transparent transparent transparent;
+}
+
+
+/* Seal */
+.env-seal {
+  transform: translateX(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+/* OPEN STATE: flap opens, letter becomes readable, overlays soften */
+.envelope.open .env-flap {
+  transform: rotateX(180deg);
+  opacity: 0.35;
+}
+
+.envelope.open .env-front {
+  opacity: 0.15; /* keeps envelope look but stops washing out text */
+  transition: opacity 0.35s ease;
+}
+
+.envelope.open .env-seal {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.6);
+}
+
+.envelope.open .env-letter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* -----------------------------
+   FINAL SCREEN CONFETTI CANVAS
+------------------------------ */
+#confettiCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2; /* above screens + hearts */
+}
+/* Final screen photo styling */
+.photo {
+  width: 260px;
+  max-width: 80vw;
+  border-radius: 24px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(255, 255, 255, 0.6);
+
+  margin-top: 20px;
+
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* When yes screen becomes active */
+#yesScreen.active .photo {
+  opacity: 1;
+  transform: scale(1);
+}
+@keyframes gentleFloat {
+  0% { transform: scale(1) translateY(0px); }
+  50% { transform: scale(1) translateY(-6px); }
+  100% { transform: scale(1) translateY(0px); }
+}
+
+#yesScreen.active .photo {
+  animation: gentleFloat 4s ease-in-out infinite;
+}
+.photo {
+  border: 3px solid rgba(255, 255, 255, 0.8);
+}

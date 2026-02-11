@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be My Valentine?</title>
+<link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body> 
+    <main id="introScreen" class="screen active">
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+
+      <!-- the letter that slides out -->
+      <div class="env-letter">
+        <h1>This is for my aweej and only my aweej 💌</h1>
+        <h2>Are you aweej?? 👀</h2>
+
+        <div class="intro-buttons">
+          <button id="aweejYesBtn">Yes, I am 😌</button>
+          <button id="aweejNoBtn">No 👀</button>
+        </div>
+      </div>
+
+      <!-- envelope front + flap -->
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">💗</div>
+    </div>
+
+    <p class="env-hint">click the envelope ✨</p>
+  </div>
+</main>
+
+    <div id="heartsLayer" aria-hidden="true"></div>
+
+    <main id="askScreen" class="screen">
+     <h1>Will you be my Valentine? 💞</h1>
+
+  <div class="button-area">
+    <button id="yesBtn">Yes 🥰</button>
+    <button id="noBtn">No 🥺💔</button>
+  </div>
+</main>
+<main id="yesScreen" class="screen">
+  <h1>I love you so much ❤️</h1>
+
+  <img src="assets/photo.jpg" alt="A cute photo" class="photo" />
+
+  <canvas id="confettiCanvas"></canvas>
+</main>
+<script src="script.js"></script>
+
+  </body>
+</html>
